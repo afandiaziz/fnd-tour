@@ -26,12 +26,12 @@
         </a>
     </li>
     
-    {{-- <li class="nav-item">
+    <li class="nav-item">
         <a class="nav-link" href="{{ route('transaction.index') }}">
             <i class="fas fa-fw fa-money"></i>
             <span>Transaction</span>
         </a>
-    </li> --}}
+    </li>
     
     <hr class="sidebar-divider">
     

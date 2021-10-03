@@ -11,9 +11,9 @@
     
     <!-- Content Row -->
     <div class="row">
-        <div class="card-body">
+        <div class="card card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-sm table-hover table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -30,9 +30,9 @@
                         <tr>
                             <td>{{ $item->id }}</td>
                             <td>{{ $item->travel_package->title }}</td>
-                            <td>{{ $item->user->name }}</td>
-                            <td>${{ $item->additional_visa }}</td>
-                            <td>${{ $item->transaction_total }}</td>
+                            <td>{{ $item->users->name }}</td>
+                            <td>{{ $item->additional_visa }}</td>
+                            <td>{{ $item->transaction_total }}</td>
                             <td>{{ $item->transaction_status }}</td>
                             <td>
                                 <a href="{{ route('transaction.show', $item->id) }}" class="btn btn-primary">
