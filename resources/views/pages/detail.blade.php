@@ -27,41 +27,30 @@
             <div class="row" id="details-content">
                 <div class="col-12 col-lg-8 pl-lg-0">
                     <div class="card">
-                        <h1 class="title-details font-weight-bold">Mount Bromo</h1>
-                        <p class="sub-title-details">Indonesia</p>
+                        <h1 class="title-details font-weight-bold">{{ $item->title }}</h1>
+                        <p class="sub-title-details">{{ $item->location }}</p>
+                        @if ($item->galleries->count())
                         <div class="gallery">
                             <div class="xzoom-container">
-                                <img class="xzoom5 w-100" id="xzoom-magnific" src="{{ url('assets/img/pic_featured.jpg') }}"
-                                    xoriginal="{{ url('assets/img/pic_featured.jpg') }}" />
+                                <img class="xzoom5 w-100" id="xzoom-magnific" src="{{ Storage::url($item->galleries->first()->image) }}"
+                                    xoriginal="{{ Storage::url($item->galleries->first()->image) }}" />
                                 <div class="xzoom-thumbs">
-                                    <a href="{{ url('assets/img/pic_featured.jpg') }}"><img class="xzoom-gallery5" width="120" src="{{ url('assets/img/pic_featured.jpg') }}" xpreview="{{ url('assets/img/pic_featured.jpg') }}"></a>
-                                    <a href="{{ url('assets/img/pic_featured.jpg') }}"><img class="xzoom-gallery5" width="120" src="{{ url('assets/img/pic_featured.jpg') }}" xpreview="{{ url('assets/img/pic_featured.jpg') }}"></a>
-                                    <a href="{{ url('assets/img/pic_featured.jpg') }}"><img class="xzoom-gallery5" width="120" src="{{ url('assets/img/pic_featured.jpg') }}" xpreview="{{ url('assets/img/pic_featured.jpg') }}"></a>
-                                    <a href="{{ url('assets/img/pic_featured.jpg') }}"><img class="xzoom-gallery5" width="120" src="{{ url('assets/img/pic_featured.jpg') }}" xpreview="{{ url('assets/img/pic_featured.jpg') }}"></a>
-                                    <a href="{{ url('assets/img/pic_featured.jpg') }}"><img class="xzoom-gallery5" width="120" src="{{ url('assets/img/pic_featured.jpg') }}" xpreview="{{ url('assets/img/pic_featured.jpg') }}"></a>
+                                    @foreach ($item->galleries as $gallery)
+                                    <a href="{{ Storage::url($gallery->image) }}"><img class="xzoom-gallery5" width="120" src="{{ Storage::url($gallery->image) }}" xpreview="{{ Storage::url($gallery->image) }}"></a>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
+                        @endif
                         <h2>About Travel</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ornare dui massa. Vestibulum
-                            sollicitudin elementum mauris, a vulputate metus aliquam quis. Phasellus non turpis mauris.
-                            Sed dictum odio erat, non accumsan erat finibus eu. Curabitur odio odio, convallis vel
-                            aliquet rhoncus, tempus in eros. Ut et scelerisque quam, a sodales neque. Ut id ullamcorper
-                            ipsum. Fusce malesuada accumsan nibh, quis dictum dui lobortis ut. Cras eget malesuada est.
-                        </p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ornare dui massa. Vestibulum
-                            sollicitudin elementum mauris, a vulputate metus aliquam quis. Phasellus non turpis mauris.
-                            Sed dictum odio erat, non accumsan erat finibus eu. Curabitur odio odio, convallis vel
-                            aliquet rhoncus, tempus in eros. Ut et scelerisque quam, a sodales neque. Ut id ullamcorper
-                            ipsum. Fusce malesuada accumsan nibh, quis dictum dui lobortis ut. Cras eget malesuada est.
-                        </p>
+                        <p>{!! $item->about !!} </p>
                         <div class="row features">
                             <div class="col-md-4">
                                 <div class="description">
                                     <img src="{{ url('assets/img/ic_event.jpg') }}" alt="features travel - Event ">
                                     <div class="description">
                                         <h4>Featured Event</h4>
-                                        <p>Sunrise</p>
+                                        <p>{{ $item->featured_event }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +59,7 @@
                                     <img src="{{ url('assets/img/ic_language.jpg') }}" alt="features travel - Language ">
                                     <div class="description">
                                         <h4>Language</h4>
-                                        <p>Bahasa Indonesia</p>
+                                        <p>{{ $item->language }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -79,7 +68,7 @@
                                     <img src="{{ url('assets/img/ic_foods.jpg') }}" alt="features travel - Foods ">
                                     <div class="description">
                                         <h4>Foods</h4>
-                                        <p>Local Foods</p>
+                                        <p>{{ $item->foods }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -109,24 +98,32 @@
                             <table class="table table-sm table-borderless w-100">
                                 <tr>
                                     <td>Date of Departure</td>
-                                    <td class="text-right text-muted">19 Jul 2019</td>
+                                    <td class="text-right text-muted">{{ \Carbon\Carbon::create($item->date_of_departure)->format(' ') }}</td>
                                 </tr>
                                 <tr>
                                     <td>Duration</td>
-                                    <td class="text-right text-muted">3D 2N</td>
+                                    <td class="text-right text-muted">{{ $item->duration }}</td>
                                 </tr>
                                 <tr>
                                     <td>Type</td>
-                                    <td class="text-right text-muted">Open</td>
+                                    <td class="text-right text-muted">{{ $item->type }}</td>
                                 </tr>
                                 <tr>
                                     <td>Price</td>
-                                    <td class="text-right text-muted">$60.00 / person</td>
+                                    <td class="text-right text-muted">${{ $item->price }},00 / person</td>
                                 </tr>
                             </table>
                         </div>
                     </div>
-                    <a href="{{ url('checkout') }}" class="btn btn-block btn-primary waves-effect">Join Now</a>
+                    @auth
+                    <form action="" method="post">
+                        @csrf
+                        <button class="btn btn-block btn-primary waves-effect" type="submit">Join Now</button>
+                    </form>
+                    @endauth
+                    @guest
+                    <a href="{{ route('login') }}" class="btn btn-block btn-primary waves-effect">Login or Register to Join</a>
+                    @endguest
                 </div>
             </div>
         </div>

@@ -12,9 +12,15 @@
 */
 
 Route::get('/', 'HomeController@index')->name('home');
-Route::get('/detail', 'DetailController@index')->name('detail');
-Route::get('/checkout', 'CheckoutController@index')->name('checkout');
-Route::get('/checkout/success', 'CheckoutController@success')->name('checkout-success');
+Route::get('/detail/{slug}', 'DetailController@index')->name('detail');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+   Route::get('/checkout/{id}', 'CheckoutController@index')->name('checkout');
+   Route::post('/checkout/{id}', 'CheckoutController@process')->name('checkout_process');
+   Route::post('/checkout/create/{detail_id}', 'CheckoutController@create')->name('checkout-create');
+   Route::get('/checkout/remove/{detail_id}', 'CheckoutController@remove')->name('checkout-remove');
+   Route::get('/checkout/confirm/{id}', 'CheckoutController@success')->name('checkout-success');
+});
 
 // Routing for Administrator
 Route::prefix('admin')->namespace('Admin')->middleware(['auth', 'administrator'])->group(function () {
