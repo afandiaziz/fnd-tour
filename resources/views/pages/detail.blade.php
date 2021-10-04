@@ -116,7 +116,7 @@
                         </div>
                     </div>
                     @auth
-                    <form action="" method="post">
+                    <form action="{{ route('checkout_process', $item->id) }}" method="post">
                         @csrf
                         <button class="btn btn-block btn-primary waves-effect" type="submit">Join Now</button>
                     </form>
